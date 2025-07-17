@@ -4,6 +4,10 @@ const APP_CONFIG = {
     shopifyAppBridge: null
 };
 
+// Test if JavaScript is loading
+console.log('🚀 Shopify Review Aggregator app.js loaded successfully!');
+console.log('Current URL:', window.location.href);
+
 // Global state
 let appState = {
     isAuthenticated: false,
@@ -15,6 +19,7 @@ let appState = {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📱 DOM loaded, initializing app...');
     initializeApp();
 });
 
