@@ -1,0 +1,44 @@
+name: shopify-review-aggregator
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: your-username/shopify-review-app
+    branch: main
+  run_command: npm start
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 3000
+  routes:
+  - path: /
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: "3000"
+  # These will be set in the DigitalOcean dashboard
+  - key: SHOPIFY_API_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${SHOPIFY_API_KEY}
+  - key: SHOPIFY_API_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ${SHOPIFY_API_SECRET}
+  - key: SHOPIFY_SCOPES
+    scope: RUN_AND_BUILD_TIME
+    value: read_products,write_products,read_orders,write_orders
+  - key: SHOPIFY_APP_URL
+    scope: RUN_AND_BUILD_TIME
+    value: ${APP_URL}
+  - key: SHOPIFY_REDIRECT_URI
+    scope: RUN_AND_BUILD_TIME
+    value: ${APP_URL}/auth/callback
+  - key: SESSION_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ${SESSION_SECRET}
+  - key: BOL_API_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${BOL_API_KEY}
+  - key: BOL_API_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ${BOL_API_SECRET} 

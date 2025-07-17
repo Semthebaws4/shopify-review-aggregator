@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Aggregator - Shopify App</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@shopify/app-bridge@3.7.0/umd/index.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading" class="loading-screen">
+            <div class="loading-spinner"></div>
+            <p>Loading Review Aggregator...</p>
+        </div>
+
+        <!-- Authentication Screen -->
+        <div id="auth-screen" class="auth-screen" style="display: none;">
+            <div class="auth-container">
+                <div class="auth-logo">
+                    <i class="fas fa-star"></i>
+                    <h1>Review Aggregator</h1>
+                </div>
+                <p>Connect your Shopify store to start aggregating product reviews from multiple sales channels.</p>
+                <button id="install-btn" class="btn btn-primary">
+                    <i class="fab fa-shopify"></i>
+                    Install App
+                </button>
+            </div>
+        </div>
+
+        <!-- Main App Interface -->
+        <div id="main-app" class="main-app" style="display: none;">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1><i class="fas fa-star"></i> Review Aggregator</h1>
+                        <span id="shop-name" class="shop-name"></span>
+                    </div>
+                    <div class="header-right">
+                        <button id="refresh-btn" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button id="logout-btn" class="btn btn-outline">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard -->
+            <main class="app-main">
+                <!-- Stats Overview -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-products">0</h3>
+                            <p>Total Products</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-reviews">0</h3>
+                            <p>Total Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avg-rating">0.0</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="last-updated">-</h3>
+                            <p>Last Updated</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="search-input">Search Products:</label>
+                        <input type="text" id="search-input" placeholder="Search by product name...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="rating-filter">Rating Filter:</label>
+                        <select id="rating-filter">
+                            <option value="">All Ratings</option>
+                            <option value="5">5 Stars</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                            <option value="2">2+ Stars</option>
+                            <option value="1">1+ Stars</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="source-filter">Source Filter:</label>
+                        <select id="source-filter">
+                            <option value="">All Sources</option>
+                            <option value="shopify">Shopify</option>
+                            <option value="bol">Bol.com</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products List -->
+                <div class="products-section">
+                    <h2>Products with Reviews</h2>
+                    <div id="products-container" class="products-container">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Product Review Modal -->
+        <div id="review-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-product-title">Product Reviews</h2>
+                    <button id="close-modal" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-reviews-content">
+                        <!-- Reviews will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html> 
