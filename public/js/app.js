@@ -40,6 +40,20 @@ async function initializeApp() {
 // Check authentication status
 async function checkAuthStatus() {
     try {
+        // Check if we have mock authentication in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mockAuth = urlParams.get('mock');
+        const shop = urlParams.get('shop');
+        
+        if (mockAuth === 'true' && shop) {
+            // Mock authentication detected
+            appState.isAuthenticated = true;
+            appState.shop = shop;
+            updateUI();
+            return;
+        }
+        
+        // Check server authentication status
         const response = await fetch('/auth/status');
         const data = await response.json();
         
