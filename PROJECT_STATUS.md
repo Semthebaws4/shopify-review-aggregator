@@ -14,6 +14,7 @@ Build a Shopify app that aggregates product reviews from multiple sales channels
 - ✅ **Search and filtering** functionality
 - ✅ **Review modal** for detailed view
 - ✅ **GitHub repository**: https://github.com/Semthebaws4/shopify-review-aggregator
+- ✅ **Obstacles overcome**: Deployment, OAuth/shop param, and API auth issues resolved with workarounds and improved error handling
 
 ### Current Features:
 - **Dashboard** with product overview and statistics
@@ -144,12 +145,40 @@ PORT=3000
 3. **No Database**: No persistent storage of reviews
 4. **Limited Error Handling**: Basic error handling for edge cases
 
+## 🛠️ Obstacles & Solutions So Far
+
+1. **DigitalOcean Non-Zero Exit Code on Deploy**
+   - *Obstacle*: App failed to deploy due to improper port binding and missing Procfile.
+   - *Solution*: Added a Procfile, ensured the app listens on the correct port, and improved error handling in the server.
+
+2. **Shopify 'Shop parameter not found in URL' Error**
+   - *Obstacle*: The app required the 'shop' parameter in the URL, causing install issues.
+   - *Solution*: Updated the frontend to prompt for the store name if missing, improving the install flow.
+
+3. **Route Not Found / Store URL Issues**
+   - *Obstacle*: Entering the admin URL instead of the .myshopify.com URL led to route errors.
+   - *Solution*: Clarified instructions and updated frontend logic to handle store URLs correctly.
+
+4. **401 Unauthorized on Product Reviews API**
+   - *Obstacle*: API calls failed due to missing authentication in development mode.
+   - *Solution*: Added mock authentication middleware and allowed mock parameters for development/testing.
+
+5. **Frontend Fails to Load Reviews**
+   - *Obstacle*: Product reviews failed to load if API calls failed.
+   - *Solution*: Added fallback mock reviews and debugging logs to both frontend and backend for easier troubleshooting.
+
+6. **Project Documentation and Status Tracking**
+   - *Obstacle*: Needed a clear, up-to-date project status and roadmap for ongoing/future development.
+   - *Solution*: Created and regularly updated PROJECT_STATUS.md with goals, status, obstacles, and next steps.
+
+---
+
 ## 💡 Development Notes
-- **Current Mode**: Development with mock data
-- **Authentication**: Mocked for testing interface
-- **Data Source**: Hardcoded sample data
-- **Deployment**: Automatic via GitHub → DigitalOcean
-- **Testing**: Use development stores only
+- **Current Mode**: Development with mock data and robust error handling
+- **Authentication**: Mocked for testing interface; real OAuth integration is next
+- **Data Source**: Hardcoded sample data with fallback logic for failed API calls
+- **Deployment**: Automatic via GitHub → DigitalOcean; deployment issues resolved
+- **Testing**: Use development stores only; improved debugging and install flow
 
 ## 🚀 How to Continue Development
 1. **Clone the repository**: `git clone https://github.com/Semthebaws4/shopify-review-aggregator.git`
@@ -167,5 +196,5 @@ PORT=3000
 ---
 
 **Last Updated**: July 17, 2024
-**Status**: ✅ Deployed and functional with mock data
-**Next Priority**: Real Shopify OAuth integration 
+**Status**: ✅ Deployed and functional with mock data, major setup obstacles resolved
+**Next Priority**: Real Shopify OAuth integration and real data fetching 
