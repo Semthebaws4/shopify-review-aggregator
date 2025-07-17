@@ -24,11 +24,27 @@ const requireAuth = (req, res, next) => {
   return res.status(401).json({ error: 'Authentication required' });
 };
 
+// Test endpoint to check if API is working
+router.get('/test', (req, res) => {
+  res.json({ 
+    message: 'API is working',
+    session: req.session,
+    query: req.query,
+    mockAuth: req.query.mock,
+    shop: req.query.shop
+  });
+});
+
 // Get all products with aggregated reviews
 router.get('/products/reviews', requireAuth, async (req, res) => {
   try {
+    console.log('API called with session:', req.session);
+    console.log('API called with query:', req.query);
+    
     const shop = req.session.shop;
     const accessToken = req.session.accessToken;
+    
+    console.log('Using shop:', shop, 'token:', accessToken);
     
     // Get products from Shopify
     const shopifyProducts = await getShopifyProducts(shop, accessToken);

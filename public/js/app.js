@@ -253,6 +253,14 @@ async function loadDashboardData() {
         
         console.log('Fetching data from:', apiUrl);
         const response = await fetch(apiUrl);
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.log('Error response:', errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
