@@ -4,10 +4,24 @@ const router = express.Router();
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
-  if (!req.session || !req.session.accessToken) {
-    return res.status(401).json({ error: 'Authentication required' });
+  // Allow mock authentication for development
+  if (req.session && req.session.accessToken) {
+    return next();
   }
-  next();
+  
+  // Check for mock authentication in query params
+  const mockAuth = req.query.mock;
+  const shop = req.query.shop;
+  
+  if (mockAuth === 'true' && shop) {
+    // Set mock session data
+    req.session.shop = shop;
+    req.session.accessToken = 'mock-access-token';
+    req.session.isOnline = false;
+    return next();
+  }
+  
+  return res.status(401).json({ error: 'Authentication required' });
 };
 
 // Get all products with aggregated reviews
