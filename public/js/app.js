@@ -131,12 +131,18 @@ function setupEventListeners() {
 
 // Handle app installation
 function handleInstall() {
-    const shop = getShopFromUrl();
-    if (shop) {
-        window.location.href = `/auth/install?shop=${shop}`;
+  const shop = getShopFromUrl();
+  if (shop) {
+    window.location.href = `/auth/install?shop=${shop}`;
+  } else {
+    // Show a prompt to enter shop name
+    const shopName = prompt('Please enter your Shopify store name (e.g., your-store.myshopify.com):');
+    if (shopName) {
+      window.location.href = `/auth/install?shop=${shopName}`;
     } else {
-        showError('Shop parameter not found in URL');
+      showError('Please provide a valid Shopify store name');
     }
+  }
 }
 
 // Handle refresh
