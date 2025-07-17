@@ -366,7 +366,25 @@ async function openProductReviews(productId, productTitle) {
     try {
         appState.currentProduct = { id: productId, title: productTitle };
         
-        const response = await fetch(`/api/products/${productId}/reviews?title=${encodeURIComponent(productTitle)}`);
+        // Check if we're in mock mode and pass authentication params
+        const urlParams = new URLSearchParams(window.location.search);
+        const mockAuth = urlParams.get('mock');
+        const shop = urlParams.get('shop');
+        
+        let apiUrl = `/api/products/${productId}/reviews?title=${encodeURIComponent(productTitle)}`;
+        if (mockAuth === 'true' && shop) {
+            apiUrl += `&mock=true&shop=${encodeURIComponent(shop)}`;
+        }
+        
+        console.log('Fetching product reviews from:', apiUrl);
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.log('Error response:', errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
