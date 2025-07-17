@@ -241,7 +241,18 @@ function applyFilters() {
 // Load dashboard data
 async function loadDashboardData() {
     try {
-        const response = await fetch('/api/products/reviews');
+        // Check if we're in mock mode and pass authentication params
+        const urlParams = new URLSearchParams(window.location.search);
+        const mockAuth = urlParams.get('mock');
+        const shop = urlParams.get('shop');
+        
+        let apiUrl = '/api/products/reviews';
+        if (mockAuth === 'true' && shop) {
+            apiUrl += `?mock=true&shop=${encodeURIComponent(shop)}`;
+        }
+        
+        console.log('Fetching data from:', apiUrl);
+        const response = await fetch(apiUrl);
         const data = await response.json();
         
         if (data.success) {
