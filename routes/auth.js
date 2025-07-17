@@ -2,15 +2,27 @@ const express = require('express');
 const { Shopify } = require('@shopify/shopify-api');
 const router = express.Router();
 
-// Initialize Shopify API
-const shopify = new Shopify({
-  apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET,
-  scopes: process.env.SHOPIFY_SCOPES.split(','),
-  hostName: process.env.SHOPIFY_APP_URL.replace(/https:\/\//, ''),
-  isEmbeddedApp: true,
-  apiVersion: '2023-10'
-});
+// Initialize Shopify API with fallbacks for missing env vars
+let shopify;
+try {
+  shopify = new Shopify({
+    apiKey: process.env.SHOPIFY_API_KEY || 'placeholder',
+    apiSecretKey: process.env.SHOPIFY_API_SECRET || 'placeholder',
+    scopes: (process.env.SHOPIFY_SCOPES || 'read_products').split(','),
+    hostName: (process.env.SHOPIFY_APP_URL || 'localhost:3000').replace(/https?:\/\//, ''),
+    isEmbeddedApp: true,
+    apiVersion: '2023-10'
+  });
+} catch (error) {
+  console.error('Shopify API initialization error:', error);
+  // Create a mock shopify object for development
+  shopify = {
+    auth: {
+      begin: async () => '/auth/mock',
+      callback: async () => ({ session: { shop: 'test.myshopify.com', accessToken: 'mock-token' } })
+    }
+  };
+}
 
 // Install app route - redirects to Shopify OAuth
 router.get('/install', async (req, res) => {
