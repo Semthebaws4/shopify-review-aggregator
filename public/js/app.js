@@ -45,8 +45,11 @@ async function checkAuthStatus() {
         const mockAuth = urlParams.get('mock');
         const shop = urlParams.get('shop');
         
+        console.log('Auth check - mockAuth:', mockAuth, 'shop:', shop);
+        
         if (mockAuth === 'true' && shop) {
             // Mock authentication detected
+            console.log('Mock authentication detected, setting authenticated state');
             appState.isAuthenticated = true;
             appState.shop = shop;
             updateUI();
@@ -54,8 +57,11 @@ async function checkAuthStatus() {
         }
         
         // Check server authentication status
+        console.log('Checking server authentication status');
         const response = await fetch('/auth/status');
         const data = await response.json();
+        
+        console.log('Server auth response:', data);
         
         appState.isAuthenticated = data.authenticated;
         appState.shop = data.shop;
@@ -64,6 +70,7 @@ async function checkAuthStatus() {
     } catch (error) {
         console.error('Auth status check error:', error);
         appState.isAuthenticated = false;
+        updateUI();
     }
 }
 
@@ -73,9 +80,12 @@ function updateUI() {
     const authScreen = document.getElementById('auth-screen');
     const mainApp = document.getElementById('main-app');
     
+    console.log('Updating UI - authenticated:', appState.isAuthenticated, 'shop:', appState.shop);
+    
     loadingScreen.style.display = 'none';
     
     if (appState.isAuthenticated) {
+        console.log('Showing main app interface');
         authScreen.style.display = 'none';
         mainApp.style.display = 'block';
         
@@ -84,7 +94,11 @@ function updateUI() {
         if (shopNameElement && appState.shop) {
             shopNameElement.textContent = appState.shop;
         }
+        
+        // Load dashboard data
+        loadDashboardData();
     } else {
+        console.log('Showing auth screen');
         authScreen.style.display = 'flex';
         mainApp.style.display = 'none';
     }
